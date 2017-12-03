@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <!-- This is the body of the index. -->
+  <div>
+    <form method="POST" action="/login">
+      <input name="email" placeholder="Enter your email">
+      <input name="password" placeholder="Password">
+      <input class="btn" type="submit" value="Log in">
+    </form>
+  </div>
+{% endblock %}

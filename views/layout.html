@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/main.css"> 
+    {%if indexPage %}
+    <link rel="stylesheet" href="/css/index.css">
+    {% endif %}
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Merriweather:300,400" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <span id="title">MovieRank</span>
+        <div class="links pull-right">
+          <a href>Login</a>
+          <a href>Sign Up</a>
+        </div>
+      </div>
+    </header>
+    <div class="content">
+      {% block body %}
+      {% endblock %}
+    </div>
+    <footer>
+      This is the footer.
+    </footer>
+  </body>
+</html>
