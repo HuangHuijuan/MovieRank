@@ -22,7 +22,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/recommand', function(req, res){
-  var param = req.body.username;
+  var param = req.body.userid;
   console.log(param);
   recommand._credence_recommand(param, (result) => res.json(result));
 });
