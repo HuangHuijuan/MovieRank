@@ -6,25 +6,30 @@ var client = new pg.Client({
 
 client.connect();
 
-function _insert(insertQuery, value) {
+function _insert(insertQuery, callback) {
 	console.log("Log: insert");  
+	
     client.query(insertQuery,  function(error, results)  
     {  
         if(error)  
         {  
             console.log("Insert Error: " + error.message),  
             client.end();  
-            return;  
-        }  
-        console.log('Inserted: ' + results.affectedRows + ' row.'),  
+            return;
+        }
+        if (callback && results.rowCount !== 0) {
+        	callback(results.rows[0].userid);
+        }
+        console.log('Inserted: ' + results.rowCount + ' row.'),  
         console.log('insert success...\n');  
     });  
+    
 }
 
 function _select(selectQuery, callback)  
 {  
     console.log("Log: select");  
-    client.query(selectQuery,  function selectCb(error, results, fields)  
+    client.query(selectQuery,  function (error, results, fields)  
     {  
         if (error)  
         {  
