@@ -1,13 +1,13 @@
 const validator = require('validator');
 
-const db_accessor = require(__dirname + '/db_accessor.js');
+const userModel = require('../models/user.js');
 
-function login()
+function login(request, response)
 {
 	// const email = request.body.email;
 	// const pwd = request.body.password;
-	const email = '123@gmail.com';
-	const pwd = '123';
+	// const email = '123@gmail.com';
+	// const pwd = '123';
 
 	let errors = [];
 
@@ -20,21 +20,22 @@ function login()
 	}
 
 	if (errors.length != 0) {
-
+		
 	}
-
-	const query = {
-		text: 'SELECT password FROM users WHERE email = $1',
-		values: [email]
-	}
-
-	db_accessor._select(query, res => {
-		if (res.length != 0 && pwd === res[0].password) {
-			console.log('Login success!');
+	userModel.findUser(email, user => {
+		console.log(user);
+		if (user) {
+			if (user.password === pwd) {
+				request.session.user = user;
+				console.log('Login success!');
+			} else {
+				console.log('Incorrect password');
+			}
 		} else {
-			console.log('Incorrect password!');
+			console.log('Email doesn\'t exist!');
 		}
-	})
+	});
+
 }
 
 module.exports = {

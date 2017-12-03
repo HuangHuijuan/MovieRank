@@ -2,7 +2,9 @@ const validator = require('validator');
 
 const db_accessor = require(__dirname + '/db_accessor.js');
 
-function register() 
+const userModel = require('../models/user.js');
+
+function register(request, response) 
 {
 	// const email = request.body.email;
 	// const pwd = request.body.password;
@@ -38,33 +40,15 @@ function register()
 
 	}
 
-	db_accessor._select(check_duplicate_email_query, res => {
-		if (res.length != 0) {
+	userModel.findUser(email, user => {
+		if (user) {
 			console.log('Email already existed!');
 		} else {
-			insertUserData(email, username, pwd, genres);
+			userModel.addUser(email, username, pwd, genres, function() {
+				console.log('Register success!');
+			});		
 		}
-	})
-}
-
-function insertUserData(email, username, pwd, genres) 
-{
-	const str = genres.join('|');
-	const query = {
-		text: 'INSERT INTO Users(email, username, password, genres) VALUES ($1, $2, $3, $4) RETURNING userid',
-		values: [email, username, pwd, str]
-	};
-	db_accessor._insert(query);
-
-	//db_accessor._insert(query, uid => {
-		// genres.forEach(element => {
-		// 	const query = {
-		// 		text: 'INSERT INTO Genres(userid, genre) VALUES ($1, $2)',
-		// 		values: [uid, element]
-		// 	};
-		// 	db_accessor._insert(query);
-		// });
-	//});
+	});
 }
 
 module.exports = {
