@@ -58,13 +58,13 @@ function requireLogin (req, res, next) {
   }
 };
 
-app.get('/', requireLogin, indexController);
-app.get('/rank', requireLogin, rankController.index);
+// app.get('/', requireLogin, indexController);
+// app.get('/rank', requireLogin, rankController.index);
 
-// app.get('/', indexController);
-// app.get('/rank', rankController.index);
+app.get('/', indexController);
+app.get('/rank', rankController.index);
 
-app.post('/recommand', requireLogin, function(req, res){
+app.post('/recommand', function(req, res){
   var param = req.body.userid;
   console.log(param);
   recommand._credence_recommand(param, (result) => res.json(result));
