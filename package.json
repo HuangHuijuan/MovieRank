@@ -20,6 +20,7 @@
     "express": "^4.16.2",
     "heroku": "^0.2.0",
     "pg": "^7.4.0",
-    "validator": "^9.1.2"
+    "validator": "^9.1.2",
+    "body-parser": "^1.8.1"
   }
 }
