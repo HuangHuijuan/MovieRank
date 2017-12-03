@@ -6,6 +6,10 @@ const registerController = require('./controllers/register.js');
 
 const loginController = require('./controllers/login.js');
 
+const searchController = require('./controllers/search.js');
+
+const rankController = require('./controllers/rank.js');
+
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
@@ -36,4 +40,7 @@ const server = app.listen(3001, function () {
 // })
 
 
-loginController.login();
+//loginController.login();
+// searchController.tagSearch();
+
+rankController.rank();

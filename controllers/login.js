@@ -9,8 +9,22 @@ function login()
 	const email = '123@gmail.com';
 	const pwd = '123';
 
+	let errors = [];
+
+	if (!validator.isLength(email, { min: 1, max: 50}) || !validator.isEmail(email)) {
+		errors.push('Invalid email');
+	}
+
+	if (!validator.isLength(pwd, { min: 1, max: 50})) {
+		errors.push('Invalid password');
+	}
+
+	if (errors.length != 0) {
+
+	}
+
 	const query = {
-		text: 'select password from users where email = $1',
+		text: 'SELECT password FROM users WHERE email = $1',
 		values: [email]
 	}
 
