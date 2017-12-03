@@ -1,25 +1,30 @@
 const express = require('express');
-
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const nunjucks = require('nunjucks');
 const app = express();
-
+const indexController = require('./controllers/index.js');
+const rankController = require('./controllers/rank.js');
 const registerController = require('./controllers/register.js');
-
 const loginController = require('./controllers/login.js');
-
 const db_accessor = require('./controllers/db_accessor.js');
-
 const recommand = require('./controllers/recommand.js');
 
-const bodyParser     =        require("body-parser");
-
 //Here we are configuring express to use body-parser as middle-ware.
+app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
-app.get('/', function (req, res) {
-  res.send('Hello World!');
+nunjucks.configure('views', {
+  autoescape: true,
+  express: app,
 });
+
+app.set('view engine', 'html');
+app.use(express.static(__dirname + '/public'));
+
+app.get('/', indexController);
+app.get('/rank', rankController);
 
 app.post('/recommand', function(req, res){
   var param = req.body.userid;

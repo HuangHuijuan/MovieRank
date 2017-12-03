@@ -1,9 +1,9 @@
 function index(req, res) {
   const data = {
-    rankPage: 'yes',
+    indexPage: 'yes',
     title: 'Movie Rank'
   };
-  res.render('rank', data);
+  res.render('index', data);  
 }
 
 module.exports = index;
