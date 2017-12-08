@@ -2,7 +2,9 @@ const validator = require('validator');
 
 const db_accessor = require(__dirname + '/db_accessor.js');
 
-function register() 
+const userModel = require('../models/user.js');
+
+function register(request, response) 
 {
 	// const email = request.body.email;
 	// const pwd = request.body.password;
@@ -16,17 +18,17 @@ function register()
 
 	const errors = [];
 
-	if (!validator.isLength(pwd, {min: 6, max: 50})) {
-		errors.push('Bad password');
+	if (!validator.isLength(pwd, {min: 1, max: 50})) {
+		errors.push('Invalid password');
 	}
 	if (genres.length < 3) {
 		errors.push('You must select at least 3 geners');
 	}
 	if (!validator.isLength(username, {min: 1, max: 50})) {
-		errors.push('Bad username');
+		errors.push('Invalid username');
 	}
 	if (!validator.isEmail(email)) {
-		errors.push('Bad email');
+		errors.push('Invalid email');
 	}
 
 	const check_duplicate_email_query = {
@@ -38,30 +40,14 @@ function register()
 
 	}
 
-	db_accessor._select(check_duplicate_email_query, res => {
-		if (res.length != 0) {
+	userModel.findUser(email, user => {
+		if (user) {
 			console.log('Email already existed!');
 		} else {
-			insertUserData(email, username, pwd, genres);
+			userModel.addUser(email, username, pwd, genres, function() {
+				console.log('Register success!');
+			});		
 		}
-	})
-}
-
-function insertUserData(email, username, pwd, genres) 
-{
-	const query = {
-		text: 'INSERT INTO Users(email, username, password) VALUES ($1, $2, $3) RETURNING userid',
-		values: [email, username, pwd]
-	};
-
-	db_accessor._insert(query, uid => {
-		genres.forEach(element => {
-			const query = {
-				text: 'INSERT INTO Genres(userid, genre) VALUES ($1, $2)',
-				values: [uid, element]
-			};
-			db_accessor._insert(query);
-		});
 	});
 }
 

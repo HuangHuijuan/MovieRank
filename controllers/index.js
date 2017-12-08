@@ -1,9 +1,9 @@
 const router = require('express').Router();
 
-router.get('/', index);
+router.get('/', movieRank);
 router.get('/login', login);
 router.get('/signup', signup);
-router.get('/rank', rank);
+router.get('/movies', movieRank);
 
 function index(req, res) {
   const data = {
@@ -29,7 +29,7 @@ function signup(req, res) {
   res.render('signup', data);
 }
 
-function rank(req, res) {
+function movieRank(req, res) {
   const movies = [
     {
       movieId: 'a',
