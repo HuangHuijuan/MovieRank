@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const nunjucks = require('nunjucks');
 const app = express();
 const indexController = require('./controllers/index.js');
-const rankController = require('./controllers/rank.js');
 const registerController = require('./controllers/register.js');
 const loginController = require('./controllers/login.js');
 const db_accessor = require('./controllers/db_accessor.js');
@@ -23,8 +22,7 @@ nunjucks.configure('views', {
 app.set('view engine', 'html');
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', indexController);
-app.get('/rank', rankController);
+app.use('/', indexController);
 
 app.post('/recommand', function(req, res){
   var param = req.body.userid;

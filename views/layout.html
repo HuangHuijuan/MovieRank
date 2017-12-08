@@ -4,27 +4,28 @@
     <meta charset="utf-8">
     <title>{{title}}</title>
     <link rel="stylesheet" href="/css/main.css"> 
-    {%if indexPage %}
     <link rel="stylesheet" href="/css/index.css">
-    {% endif %}
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Merriweather:300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
   <body>
     <header>
       <div class="container">
-        <span id="title">MovieRank</span>
+        <span id="title"><a href="/">MovieRank</a></span>
         <div class="links pull-right">
-          <a href>Login</a>
-          <a href>Sign Up</a>
+          {% if route == "/signup" %} <a href="/login" >Log in</a> {% endif %}
+          {% if route == "/login" %} <a href="/signup" >Sign Up</a> {% endif %}
         </div>
       </div>
     </header>
     <div class="content">
+      <div class="container">
       {% block body %}
       {% endblock %}
+      </div>
     </div>
     <footer>
-      This is the footer.
+      <!--This is the footer.-->
     </footer>
   </body>
 </html>
