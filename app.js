@@ -7,6 +7,7 @@ const indexController = require('./controllers/index.js');
 const registerController = require('./controllers/register.js');
 const loginController = require('./controllers/login.js');
 const searchController = require('./controllers/search.js');
+const rankController = require('./controllers/rank.js');
 const recommand = require('./controllers/recommand.js');
 const session = require('client-sessions');
 const userModel = require('./models/user.js');
@@ -83,26 +84,28 @@ const server = app.listen(3001, function () {
 // registerController.register();
 
 
-const db_accessor = require('./controllers/db_accessor.js');
+// const db_accessor = require('./controllers/db_accessor.js');
 
-// const delete_query = {
-// 	text: 'delete from users where username = $1',
-// 	values: ['Alice']
+// // const delete_query = {
+// // 	text: 'delete from users where username = $1',
+// // 	values: ['Alice']
+// // }
+// // db_accessor._delete(delete_query);
+
+// const select_query = {
+// 	text: 'select * from users limit 10'
 // }
-// db_accessor._delete(delete_query);
-
-const select_query = {
-	text: 'select * from users'
-}
-db_accessor._select(select_query, res => {
-	console.log(res);
-})
+// db_accessor._select(select_query, res => {
+// 	console.log(res);
+// })
 
 // const userid = 2;
 
 // recommand._credence_recommand(userid, (result) => console.log(result));
 
 // loginController.login();
+
+searchController.searchByTitle();
 
 
 

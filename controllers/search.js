@@ -1,20 +1,30 @@
 const db_accessor = require(__dirname + '/db_accessor.js');
+const movieModel = require('../models/movie.js');
 
-function keyWordSearch()
+function searchByTitle()
 {
-	//const keyword = request.body.keyword;
-	const keyword = 'Tom';
+	const title = request.body.title;
+	const userid = request.session.user.userid;
+	const page = request.params.page;
+	let start = 0;
+	let end = 10;
+	if (page !== undefined) {
+		start = (page - 1) * 10;
+		end = Math.min(start + 10, len);
+	}
 
-	const query = {
-		text: `SELECT * FROM Movies where LOWER(title) LIKE LOWER(\'%${keyword}%\');`,
-	};
 
-	db_accessor._select(query, res => {
-		console.log(res);
+	movieModel.searchMovieByTitleWithUID(title, userid, end, res => {
+		const len = res.length;
+		const numOfPages = Math.ceil(len / 10);
+		response.render('', { /* TODO */
+			numOfPages: numOfPages,
+			movies: res.slice(start, end)
+		});
 	});
 }
 
-function tagSearch()
+function searchByTag()
 {
 	//const tag = request.body.tag;
 	const tag = 'comedy';
@@ -29,6 +39,6 @@ function tagSearch()
 }
 
 module.exports = {
-	keyWordSearch,
-	tagSearch
+	searchByTitle,
+	searchByTag
 };
