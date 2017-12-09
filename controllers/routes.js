@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const auth = require('../models/auth.js');
 const movie = require('../models/movie.js');
+const rank = require('../models/rank.js');
 const searchController = require('./search.js');
 
 router.get('/', requireLogin, movieRank);
@@ -89,9 +90,25 @@ function signupPage(req, res) {
 }
 
 function movieRank(req, res) {
-  const {page, search} = req.query;
-  searchController.searchByTitle(search, req.session.userid, page, (ret) => {
-    // console.log('movieRank', search, page, ret);
+  let {page, search} = req.query;
+  page = page || 1;
+  console.log('movieRank', search, page);
+  if(!search) {
+    rank.rank(req.session.useid, page, (ret) => {
+      const movies = ret.movies.map(movie => {
+        movie.avg_rating = movie.avg_rating.toFixed(1);
+        return movie;
+      });
+      const data = {
+        route: '/',
+        name: req.session.name,
+        numOfPages: ret.numOfPages,
+        movies: movies,
+      };
+      res.render('movie_rank', data);
+    });
+  }
+  searchController.searchByTitle(search, req.userid, page, (ret) => {
     const movies = ret.movies.map(movie => {
       movie.avg_rating = movie.avg_rating.toFixed(1);
       return movie;
@@ -108,8 +125,8 @@ function movieRank(req, res) {
 
 function addRatingToMovie(req, res) {
   const {movieId, rating} = req.params;
-  console.log('addRatingToMovie', movieId, rating, req.session)
-  movie.insertRating(req.session.userid, movieId, rating, () => {
+  console.log('addRatingToMovie', movieId, rating, req.userid);
+  movie.insertRating(req.userid, movieId, rating, () => {
     res.json({succ: 'success'});
   });
 }
