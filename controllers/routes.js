@@ -1,9 +1,35 @@
 const router = require('express').Router();
+const auth = require('../models/auth');
 
 router.get('/', movieRank);
-router.get('/login', login);
-router.get('/signup', signup);
+router.get('/login', loginPage);
+router.get('/signup', signupPage);
 router.get('/movies', movieRank);
+
+router.post('/login', login);
+router.post('/register', register);
+
+function login(req, res) {
+  const {email, password} = req.body;
+  auth.login(email, password, (err, userid) => {
+    if(err) {
+     return;
+    }
+    req.session.userid = userid;
+    res.redirect('/');
+  });
+}
+
+function register(req, res) {
+  const {email, password} = req.body;
+  auth.register(email, password, name, (err, userid) => {
+    if(err) {
+      return;
+    }
+    req.session.userid = userid;
+    res.redirect('/');
+  });
+}
 
 function index(req, res) {
   const data = {
@@ -13,7 +39,7 @@ function index(req, res) {
   res.render('movie_rank', data);
 }
 
-function login(req, res) {
+function loginPage(req, res) {
   const data = {
     route: '/login',
     title: 'Login - Movie Rank'
@@ -21,7 +47,7 @@ function login(req, res) {
   res.render('login', data);
 }
 
-function signup(req, res) {
+function signupPage(req, res) {
   const data = {
     route: '/signup',
     title: 'Sign Up - Movie Rank'

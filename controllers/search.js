@@ -1,4 +1,4 @@
-const db_accessor = require(__dirname + '/db_accessor.js');
+const db_accessor = require('../models/db_accessor.js');
 
 function keyWordSearch()
 {
