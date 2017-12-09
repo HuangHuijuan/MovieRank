@@ -3,9 +3,7 @@ const movieModel = require('../models/movie.js');
 function searchByTitle(title, userid, page, callback)
 {
 	
-
-
-	movieModel.searchMovieByTitleWithUID(title, userid, end, res => {
+	movieModel.searchMovieByTitleWithUID(title, userid, res => {
 		const len = res.length;
 		const numOfPages = Math.ceil(len / 10);
 		let start = 0;
