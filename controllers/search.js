@@ -2,7 +2,7 @@ const movieModel = require('../models/movie.js');
 
 function searchByTitle()
 {
-	const title = request.body.title;
+	const title = request.params.search;
 	const userid = request.session.user.userid;
 	const page = request.params.page;
 	let start = 0;
