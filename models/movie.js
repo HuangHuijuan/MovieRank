@@ -15,12 +15,12 @@ function searchMovieByTitle(title, callback)
 
 	db_accessor._select(query, callback);
 }
-function searchMovieByTitleWithUID(title, userid, end, callback) 
+function searchMovieByTitleWithUID(title, userid, callback) 
 {
 	const query = {
 		text: `WITH m AS (SELECT * FROM Movies WHERE LOWER(title) LIKE LOWER(\'%${title}%\')),
 				u AS (SELECT r.movieid, rating FROM Ratings r, m WHERE r.userid = ${userid} and r.movieid = m.movieid),
-				r AS (SELECT r.movieid, AVG(rating) avg_rating FROM Ratings r NATURAL JOIN m GROUP BY r.movieid ORDER BY avg_rating desc LIMIT ${end})
+				r AS (SELECT r.movieid, AVG(rating) avg_rating FROM Ratings r NATURAL JOIN m GROUP BY r.movieid ORDER BY avg_rating desc)
 				SELECT m.movieid, title, genres, avg_rating, rating as u_rating 
 				FROM r NATURAL JOIN (m NATURAL LEFT JOIN u)`
 				
@@ -40,11 +40,11 @@ function rankMovie(callback)
 	db_accessor._select(query, callback);
 }
 
-function rankMovieWithUID(userid, end, callback)
+function rankMovieWithUID(userid, callback)
 {
 	const query = {
 		text: `With r AS 
-				(SELECT movieid, AVG(rating) avg_rating FROM Ratings GROUP BY movieid ORDER BY avg_rating desc LIMIT ${end}),
+				(SELECT movieid, AVG(rating) avg_rating FROM Ratings GROUP BY movieid ORDER BY avg_rating desc),
 				u AS (SELECT movieid, rating FROM Ratings r WHERE r.userid = ${userid}) 
 				SELECT r.movieid, title, genres, avg_rating, u.rating as u_rating 
 				FROM (r NATURAL LEFT JOIN u) NATURAL JOIN Movies`

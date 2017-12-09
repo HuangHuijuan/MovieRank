@@ -94,7 +94,7 @@ function movieRank(req, res) {
   page = page || 1;
   console.log('movieRank', search, page);
   if(!search) {
-    rank.rank(req.session.useid, page, (ret) => {
+    rank.rank(req.userid, page, (ret) => {
       const movies = ret.movies.map(movie => {
         movie.avg_rating = movie.avg_rating.toFixed(1);
         return movie;

@@ -1,22 +1,22 @@
 const movieModel = require('../models/movie.js');
 
-function searchByTitle(title, userid, page, callback)
-{
-	let start = 0;
-	let end = 10;
-	if (page !== undefined) {
-		start = (page - 1) * 10;
-		end = start + 10;
-	}
-
-	movieModel.searchMovieByTitleWithUID(title, userid, end, res => {
-		const len = res.length;
-		const numOfPages = Math.ceil(len / 10);
-		callback({ 
-			numOfPages: numOfPages,
-			movies: res.slice(start)
-		});
-	});
+module.exports = {
+  searchByTitle(title, userid, page, callback) {
+    movieModel.searchMovieByTitleWithUID(title, userid, res => {
+      const len = res.length;
+      const numOfPages = Math.ceil(len / 10);
+      let start = 0;
+      let end = 10;
+      if (page !== undefined) {
+        start = (page - 1) * 10;
+        end = Math.min(start + 10, len);
+      }
+      callback({
+        numOfPages: numOfPages,
+        movies: res.slice(start, end)
+      });
+    });
+  }
 }
 
 // function searchByTag()
@@ -32,8 +32,3 @@ function searchByTitle(title, userid, page, callback)
 // 		console.log(res);
 // 	});
 // }
-
-module.exports = {
-	searchByTitle,
-	// searchByTag
-};
