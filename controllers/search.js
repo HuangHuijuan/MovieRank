@@ -6,7 +6,7 @@ function searchByTitle(title, userid, page, callback)
 	let end = 10;
 	if (page !== undefined) {
 		start = (page - 1) * 10;
-		end = Math.min(start + 10, len);
+		end = Math.min(start + 10, len); // len?
 	}
 
 

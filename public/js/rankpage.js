@@ -17,18 +17,17 @@
   }
 })();
 
-
 function onRefreshClick() {
   window.location.assign(window.location.href);
 }
 
 function onStarClick(e) {
-  const movieId = e.target.parentNode.getAttribute('movieId');
-  const rating = e.target.getAttribute('rating');
+  var movieId = e.target.parentNode.getAttribute('movieId');
+  var rating = e.target.getAttribute('rating');
 
   fetch(`/movies/${movieId}/${rating}`, option('post', {}))
-    .then(() => {
-
+    .then((res) => {
+      console.log(res);
     });
   updateStars(movieId, rating);
 }
@@ -38,7 +37,7 @@ function onPageItemClick(e) {
   console.log(search)
   var url = window.location.href.split('?')[0];
   url += search ? '?search=' + search + '&' : '?';
-  url += 'pageNum=' + e.target.getAttribute('page');
+  url += 'page=' + e.target.getAttribute('page');
   window.location.assign(url);
 }
 

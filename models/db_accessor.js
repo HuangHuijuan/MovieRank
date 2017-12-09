@@ -18,7 +18,7 @@ module.exports = {
         return;
       }
       if (callback && results.rowCount !== 0) {
-        callback(results.rows[0].userid);
+        callback(results.rows[0].userid); // bug?
       }
       console.log('Inserted: ' + results.rowCount + ' row.');
       console.log('insert success...\n');

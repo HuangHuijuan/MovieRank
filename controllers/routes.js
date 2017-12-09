@@ -1,14 +1,15 @@
 const router = require('express').Router();
-const auth = require('../models/auth');
+const auth = require('../models/auth.js');
+const movie = require('../models/movie.js');
+const searchController = require('./search.js');
 
 router.get('/', requireLogin, movieRank);
-router.get('/movies', requireLogin, movieRank);
-
 router.get('/login', loginPage);
 router.get('/signup', signupPage);
 router.get('/logout', logout);
 router.post('/login', login);
 router.post('/register', register);
+router.post('/movies/:movieId/:rating', addRatingToMovie);
 
 function requireLogin(req, res, next) {
   if (req.session && req.session.userid) {
@@ -22,7 +23,7 @@ function requireLogin(req, res, next) {
 function login(req, res) {
   const {email, password} = req.body;
   auth.login(email, password, (errors, user) => {
-    if(errors) {
+    if (errors) {
       console.log(errors)
       const data = {
         errors: errors,
@@ -41,7 +42,7 @@ function login(req, res) {
 function register(req, res) {
   const {email, password, name} = req.body;
   auth.register(email, password, name, (errors, userid) => {
-    if(errors) {
+    if (errors) {
       const data = {
         errors: errors,
         route: '/signup',
@@ -88,34 +89,29 @@ function signupPage(req, res) {
 }
 
 function movieRank(req, res) {
-  const movies = [
-    {
-      movieId: 'a',
-      title: "Justice League",
-      genre: "Action",
-      rating: 5,
-    },
-    {
-      movieId: 'b',
-      title: "Thor",
-      genre: "Action",
-      rating: 0,
-    },
-    {
-      movieId: 'c',
-      title: "Avengers: Infinite War",
-      genre: "Action",
-      rating: 4,
-    },
-  ];
+  const {page, search} = req.query;
+  searchController.searchByTitle(search, req.session.userid, page, (ret) => {
+    // console.log('movieRank', search, page, ret);
+    const movies = ret.movies.map(movie => {
+      movie.avg_rating = movie.avg_rating.toFixed(1);
+      return movie;
+    });
+    const data = {
+      route: '/',
+      name: req.session.name,
+      numOfPages: ret.numOfPages,
+      movies: movies,
+    };
+    res.render('movie_rank', data);
+  });
+}
 
-  const data = {
-    route: '/',
-    name: req.session.name,
-    movies: movies,
-  };
-
-  res.render('movie_rank', data);
+function addRatingToMovie(req, res) {
+  const {movieId, rating} = req.params;
+  console.log('addRatingToMovie', movieId, rating, req.session)
+  movie.insertRating(req.session.userid, movieId, rating, () => {
+    res.json({succ: 'success'});
+  });
 }
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const db_accessor = require('db_accessor.js');
+const db_accessor = require('./db_accessor.js');
 
 function searchMovieByTitle(title, callback)
 {

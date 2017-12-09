@@ -6,7 +6,7 @@ const session = require('client-sessions');
 const app = express();
 const routes = require('./controllers/routes.js');
 const searchController = require('./controllers/search.js');
-const rankController = require('./controllers/rank.js');
+const rankController = require('./models/rank.js');
 const recommand = require('./controllers/recommand.js');
 const userModel = require('./models/user.js');
 

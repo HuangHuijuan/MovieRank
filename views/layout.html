@@ -2,16 +2,18 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>{{title}}</title>
+  <title>Movie Rank</title>
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/index.css">
+  <link rel="icon" type='image/x-icon' href="/icon.png">
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Merriweather:300,400" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
 <header>
   <div class="container">
-    <span id="title"><a href="/">MovieRank</a></span>
+    <span id="title"><a id="title-link" href="/">MovieRank</a></span>
+    <!--<span><img id="icon" src="/icon.png"></span>-->
     <div class="links pull-right">
       {% if route == "/signup" %} <a href="/login">Log In</a> {% endif %}
       {% if route == "/login" %} <a href="/signup">Sign Up</a> {% endif %}

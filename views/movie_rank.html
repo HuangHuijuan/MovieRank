@@ -14,16 +14,16 @@
     <div class="card">
       <div class="movie-title">
         {{movie.title}}
-        <span class="movie-rating">Peer Rating: {{movie.rating}}</span>
+        <span class="movie-rating">Peer Rating: {{movie.avg_rating}}</span>
       </div>
       <div class="movie-info">
         {{movie.genre}}
       </div>
-      <div class="rating-stars" id={{movie.movieId}} movieId={{movie.movieId}}>
-        {% for i in range(1, movie.rating + 1) %}
+      <div class="rating-stars" id={{movie.movieid}} movieId={{movie.movieid}}>
+        {% for i in range(1, movie.u_rating + 1) %}
         <i class="material-icons star" rating={{i}}>star</i>
         {% endfor %}
-        {% for i in range(movie.rating + 1, 6) %}
+        {% for i in range(movie.u_rating + 1, 6) %}
         <i class="material-icons star star_border" rating={{i}}>star_border</i>
         {% endfor %}
       </div>
@@ -32,15 +32,13 @@
   {% endfor %}
 </ul>
 <ul class="pagination">
-  <li class="page-item" class="active" page="1">1</li>
-  <li class="page-item" page="2">2</li>
-  <li class="page-item" page="3">3</li>
-  <li class="page-item" page="4">4</li>
-  <li class="page-item" page="5">5</li>
-  <li class="page-item" page="6">6</li>
-  <li class="page-item" class="break-me">...</li>
-  <li class="page-item" page="1121">1121</li>
-  <li class="page-item" page="1122">1122</li>
+  {% for i in range(1, numOfPages + 1) %}
+  <li class="page-item" page={{i}}>{{i}}</li>
+  {% endfor %}
+  {% for i in range(movie.rating - 1, numOfPages + 1) %}
+  <li class="page-item" page={{i}}>{{i}}</li>
+  {% endfor %}
+
 </ul>
 
 <script src="/js/rankpage.js"></script>
