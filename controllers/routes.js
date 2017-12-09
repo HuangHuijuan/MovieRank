@@ -92,19 +92,19 @@ function movieRank(req, res) {
     {
       movieId: 'a',
       title: "Justice League",
-      genre: "Fun",
+      genre: "Action",
       rating: 5,
     },
     {
       movieId: 'b',
       title: "Thor",
-      genre: "Fun",
+      genre: "Action",
       rating: 0,
     },
     {
       movieId: 'c',
       title: "Avengers: Infinite War",
-      genre: "Fun",
+      genre: "Action",
       rating: 4,
     },
   ];
