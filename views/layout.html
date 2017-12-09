@@ -13,8 +13,9 @@
       <div class="container">
         <span id="title"><a href="/">MovieRank</a></span>
         <div class="links pull-right">
-          {% if route == "/signup" %} <a href="/login" >Log in</a> {% endif %}
+          {% if route == "/signup" %} <a href="/login" >Log In</a> {% endif %}
           {% if route == "/login" %} <a href="/signup" >Sign Up</a> {% endif %}
+          {% if route == "/" %} {{name}} <a href="/logout" >Log Out</a> {% endif %}
         </div>
       </div>
     </header>

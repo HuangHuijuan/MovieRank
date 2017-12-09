@@ -1,39 +1,71 @@
 const router = require('express').Router();
 const auth = require('../models/auth');
 
-router.get('/', movieRank);
+router.get('/', requireLogin, movieRank);
+router.get('/movies', requireLogin, movieRank);
+
 router.get('/login', loginPage);
 router.get('/signup', signupPage);
-router.get('/movies', movieRank);
-
+router.get('/logout', logout);
 router.post('/login', login);
 router.post('/register', register);
 
+function requireLogin(req, res, next) {
+  if (req.session && req.session.userid) {
+    req.userid = req.session.userid;
+    next();
+  } else {
+    res.redirect('/login');
+  }
+}
+
 function login(req, res) {
   const {email, password} = req.body;
-  auth.login(email, password, (err, userid) => {
-    if(err) {
-     return;
+  auth.login(email, password, (errors, user) => {
+    if(errors) {
+      console.log(errors)
+      const data = {
+        errors: errors,
+        route: '/login',
+        title: 'Login - Movie Rank'
+      };
+      res.render('login', data);
+      return;
     }
-    req.session.userid = userid;
+    req.session.userid = user.userid;
+    req.session.name = user.name;
     res.redirect('/');
   });
 }
 
 function register(req, res) {
-  const {email, password} = req.body;
-  auth.register(email, password, name, (err, userid) => {
-    if(err) {
+  const {email, password, name} = req.body;
+  auth.register(email, password, name, (errors, userid) => {
+    if(errors) {
+      const data = {
+        errors: errors,
+        route: '/signup',
+        title: 'Sign Up - Movie Rank'
+      };
+      res.render('signup', data);
       return;
     }
     req.session.userid = userid;
+    req.session.name = name;
     res.redirect('/');
   });
+}
+
+function logout(req, res) {
+  req.session.userid = undefined;
+  req.session.name = undefined;
+  res.redirect('/login');
 }
 
 function index(req, res) {
   const data = {
     route: '/',
+    name: req.session.name,
     title: 'Index - Movie Rank'
   };
   res.render('movie_rank', data);
@@ -78,7 +110,8 @@ function movieRank(req, res) {
   ];
 
   const data = {
-    route: '/rank',
+    route: '/',
+    name: req.session.name,
     movies: movies,
   };
 

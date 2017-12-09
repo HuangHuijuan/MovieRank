@@ -30,15 +30,7 @@ nunjucks.configure('views', {
 app.set('view engine', 'html');
 app.use(express.static(__dirname + '/public'));
 
-function requireLogin(req, res, next) {
-  if (req.session && req.session.userid) {
-    next();
-  } else {
-    res.redirect('/login');
-  }
-}
-
-app.get('/', requireLogin, routes);
+app.use('/', routes);
 
 app.post('/recommand', function (req, res) {
   var param = req.body.userid;
@@ -49,12 +41,11 @@ app.post('/recommand', function (req, res) {
 const server = app.listen(3001, function () {
   const host = server.address().address;
   const port = server.address().port;
-
-  console.log('Example app listening at http://%s:%s', host, port);
+  console.log('App listening at http://%s:%s', host, port);
 });
 
 
-const db_accessor = require('./models/db_accessor.js');
+// const db_accessor = require('./models/db_accessor.js');
 
 // const delete_query = {
 // 	text: 'delete from users where username = $1',
@@ -62,19 +53,15 @@ const db_accessor = require('./models/db_accessor.js');
 // }
 // db_accessor._delete(delete_query);
 
-const select_query = {
-  text: 'select * from users'
-}
-db_accessor._select(select_query, res => {
-  console.log(res);
-})
+// const select_query = {
+//   text: 'select * from users'
+// }
+// db_accessor._select(select_query, res => {
+//   console.log(res);
+// })
 
 // const userid = 2;
 
 // recommand._credence_recommand(userid, (result) => console.log(result));
 
 // loginController.login();
-
-
-
-

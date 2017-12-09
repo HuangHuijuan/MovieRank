@@ -3,10 +3,6 @@ const userModel = require('./user.js');
 
 module.exports = {
   login(email, password, callback) {
-    // const email = request.body.email;
-    // const password = request.body.password;
-    // const email = '123@gmail.com';
-    // const password = '123';
     let errors = [];
     if (!validator.isLength(email, {min: 1, max: 50}) || !validator.isEmail(email)) {
       errors.push('Invalid email');
@@ -20,34 +16,28 @@ module.exports = {
     }
 
     userModel.findUser(email, user => {
-      console.log(user);
       if (user && user.password === password) {
-        callback(null, user.userId);
+        callback(null, user);
       } else {
-        callback(['email and password don\'t match']);
+        callback([`email and password don't match`]);
       }
     });
   },
 
-  register(email, password, callback) {
-    // const email = '123@gmail.com';
-    // const password = '123';
-    // const username = 'Alice';
-    // const genres = ['Romantics', 'Humor', 'Actions'];
-
+  register(email, password, name, callback) {
     const errors = [];
+    if (!validator.isEmail(email)) {
+      errors.push('Invalid email');
+    }
     if (!validator.isLength(password, {min: 1, max: 50})) {
       errors.push('Invalid password');
+    }
+    if (!validator.isLength(name, {min: 1, max: 50})) {
+      errors.push('Invalid name');
     }
     // if (genres.length < 3) {
     //   errors.push('You must select at least 3 geners');
     // }
-    // if (!validator.isLength(username, {min: 1, max: 50})) {
-    //   errors.push('Invalid username');
-    // }
-    if (!validator.isEmail(email)) {
-      errors.push('Invalid email');
-    }
     if (errors.length !== 0) {
       callback(errors);
       return;
@@ -55,9 +45,9 @@ module.exports = {
 
     userModel.findUser(email, user => {
       if (user) {
-        callback(['Email already exist'], user.userid);
+        callback(['Email already exist']);
       } else {
-        userModel.addUser(email, '', password, '', (userid) => {
+        userModel.addUser(email, name, password, '', userid => {
           callback(null, userid);
         });
       }

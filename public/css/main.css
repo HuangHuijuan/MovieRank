@@ -44,7 +44,7 @@ a:hover {
   text-decoration: underline;
 }
 
-a:visited {
+a, a:visited {
   color: #3498db;
 }
 
@@ -143,4 +143,13 @@ a:visited {
 
 .movie-info {
   margin-bottom: 10px;
+}
+
+.errors {
+  color: #ff4146;
+  text-align: center;
+}
+
+.error {
+  margin-bottom: 5px;
 }

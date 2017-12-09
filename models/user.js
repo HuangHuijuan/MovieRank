@@ -23,7 +23,8 @@ module.exports = {
   },
 
   addUser(email, username, pwd, genres, callback) {
-    const str = genres.join('|');
+    // const str = genres.join('|');
+    const str = '';
     const query = {
       text: 'INSERT INTO Users(email, username, password, genre) VALUES ($1, $2, $3, $4) RETURNING userid',
       values: [email, username, pwd, str]

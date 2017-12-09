@@ -8,4 +8,11 @@
       <input class="btn" type="submit" value="Log in">
     </form>
   </div>
+  {% if errors%}
+  <div class="errors">
+    {% for error in errors %}
+    <div class="error">{{error}}</div>
+    {% endfor%}
+    {% endif %}
+  </div>
 {% endblock %}
