@@ -1,11 +1,7 @@
 const movieModel = require('../models/movie.js');
 
-function rating()
+function rating(uid, movie, score)
 {
-	const uid = request.session.user.userid;
-	const movie = request.body.movie;
-	const score = request.body.score;
-
 	movieModel.insertRating(uid, movie, score);
 }
 

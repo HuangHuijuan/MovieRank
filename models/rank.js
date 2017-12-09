@@ -1,15 +1,7 @@
-<<<<<<< HEAD:controllers/rank.js
-const db_accessor = require(__dirname + '/db_accessor.js');
-const movieModel = require('../models/movie.js');
-=======
 const db_accessor = require('./db_accessor.js');
->>>>>>> f79fdf3e53d743efbcca37d60a076dcf42048899:models/rank.js
 
-function rank(userid)
+function rank(userid, page, callback)
 {
-	const userid = request.session.user.userid;
-	const page = request.params.page;
-
 	let start = 0;
 	let end = 10;
 	if (page !== undefined) {
@@ -20,12 +12,10 @@ function rank(userid)
 	movieModel.rankMovieWithUID(userid, 10, res => {
 		const len = res.length;
 		const numOfPages = Math.ceil(len / 10);
-		response.render('', { /* TODO */
+		callback({
 			numOfPages: numOfPages,
 			movies: res.slice(start, end)
 		});
-	
-		// console.log(res);
 	});
 }
 

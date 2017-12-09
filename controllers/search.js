@@ -1,10 +1,7 @@
 const movieModel = require('../models/movie.js');
 
-function searchByTitle()
+function searchByTitle(title, userid, page, callback)
 {
-	const title = request.params.search;
-	const userid = request.session.user.userid;
-	const page = request.params.page;
 	let start = 0;
 	let end = 10;
 	if (page !== undefined) {
@@ -16,7 +13,7 @@ function searchByTitle()
 	movieModel.searchMovieByTitleWithUID(title, userid, end, res => {
 		const len = res.length;
 		const numOfPages = Math.ceil(len / 10);
-		response.render('', { /* TODO */
+		callback({ 
 			numOfPages: numOfPages,
 			movies: res.slice(start, end)
 		});
