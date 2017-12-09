@@ -1,5 +1,9 @@
+<<<<<<< HEAD:controllers/rank.js
 const db_accessor = require(__dirname + '/db_accessor.js');
 const movieModel = require('../models/movie.js');
+=======
+const db_accessor = require('./db_accessor.js');
+>>>>>>> f79fdf3e53d743efbcca37d60a076dcf42048899:models/rank.js
 
 function rank(userid)
 {

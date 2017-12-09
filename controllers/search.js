@@ -1,4 +1,3 @@
-const db_accessor = require(__dirname + '/db_accessor.js');
 const movieModel = require('../models/movie.js');
 
 function searchByTitle()
@@ -24,21 +23,21 @@ function searchByTitle()
 	});
 }
 
-function searchByTag()
-{
-	//const tag = request.body.tag;
-	const tag = 'comedy';
+// function searchByTag()
+// {
+// 	//const tag = request.body.tag;
+// 	const tag = 'comedy';
 
-	const query = {
-		text: `SELECT * FROM Movies where LOWER(genres) LIKE LOWER(\'%${tag}%\');`,
-	};
+// 	const query = {
+// 		text: `SELECT * FROM Movies where LOWER(genres) LIKE LOWER(\'%${tag}%\');`,
+// 	};
 
-	db_accessor._select(query, res => {
-		console.log(res);
-	});
-}
+// 	db_accessor._select(query, res => {
+// 		console.log(res);
+// 	});
+// }
 
 module.exports = {
 	searchByTitle,
-	searchByTag
+	// searchByTag
 };

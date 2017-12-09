@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
     "body-parser": "^1.8.1",
     "client-sessions": "^0.8.0",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "heroku": "^0.2.0",
     "morgan": "^1.9.0",
     "nunjucks": "^3.0.1",

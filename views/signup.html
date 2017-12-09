@@ -1,12 +1,19 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <div>
-    <form class="credentials-form" method="POST" action="/signup">
-      <input name="email" placeholder="Enter your email">
-      <input name="password" placeholder="Password">
-      <input name="repeatedPassword" placeholder="Repeat Password">
-      <input class="btn" type="submit" value="Sign Up">
-    </form>
+<div>
+  <form class="credentials-form" method="POST" action="/register">
+    <input name="email" placeholder="Email">
+    <input name="password" type="password" placeholder="Password">
+    <input name="name" type="text" placeholder="Name">
+    <input class="btn" type="submit" value="Sign Up">
+  </form>
+  {% if errors%}
+  <div class="errors">
+    {% for error in errors %}
+    <div class="error">{{error}}</div>
+    {% endfor%}
+    {% endif %}
   </div>
+</div>
 {% endblock %}

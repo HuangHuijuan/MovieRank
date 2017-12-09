@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
 <form class="search-form row">
   <input id="search-input" name="search" placeholder="Search movies by title">
 </form>
@@ -32,7 +31,6 @@
   </li>
   {% endfor %}
 </ul>
-
 <ul class="pagination">
   <li class="page-item" class="active" page="1">1</li>
   <li class="page-item" page="2">2</li>
@@ -43,8 +41,8 @@
   <li class="page-item" class="break-me">...</li>
   <li class="page-item" page="1121">1121</li>
   <li class="page-item" page="1122">1122</li>
-
 </ul>
+
 <script src="/js/rankpage.js"></script>
 {% endblock %}
 

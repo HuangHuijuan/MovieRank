@@ -42,6 +42,10 @@ form .btn {
   color: #e74c3c;
 }
 
+.red {
+  color: #e74c3c;
+}
+
 .rating-stars::after {
   content: "";
   clear: both;

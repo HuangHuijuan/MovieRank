@@ -1,4 +1,4 @@
-const db_accessor = require('../controllers/db_accessor.js');
+const db_accessor = require('db_accessor.js');
 
 function searchMovieByTitle(title, callback)
 {
@@ -53,9 +53,20 @@ function rankMovieWithUID(userid, end, callback)
 	db_accessor._select(query, callback);
 }
 
+function insertRating(uid, movie, score, callback)
+{
+	const query = {
+		text: 'INSERT INTO Rating(userid, movieid, rating, timestamp)',
+		values: [uid, movie, score, Date.now()]
+	}
+
+	db_accessor._insert(query, callback);
+}
+
 module.exports = {
 	searchMovieByTitle,
 	searchMovieByTitleWithUID,
 	rankMovie,
-	rankMovieWithUID
+	rankMovieWithUID,
+	insertRating
 }
