@@ -2,7 +2,7 @@ var pg = require('pg');
 var db = require('../db');
 
 var client = new pg.Client({
-	connectionString: process.env.DATABASE_URL || db.connectionString,
+	connectionString: process.env.HEROKU_POSTGRESQL_BLACK_URL || db.connectionString,
   ssl: true
 });
 
