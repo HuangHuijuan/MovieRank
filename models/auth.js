@@ -19,7 +19,7 @@ module.exports = {
       if (user && user.password === password) {
         callback(null, user);
       } else {
-        callback([`email and password don't match`]);
+        callback([`Email and password don't match`]);
       }
     });
   },
@@ -45,7 +45,7 @@ module.exports = {
 
     userModel.findUser(email, user => {
       if (user) {
-        callback(['Email already exist']);
+        callback(['Email already exists']);
       } else {
         userModel.addUser(email, name, password, '', userid => {
           callback(null, userid);

@@ -38,12 +38,10 @@ app.post('/recommand', function (req, res) {
   recommand._credence_recommand(param, (result) => res.json(result));
 });
 
-const server = app.listen(3001, function () {
-  const host = server.address().address;
-  const port = server.address().port;
-  console.log('App listening at http://%s:%s', host, port);
+const port = process.env.PORT || 3001;
+app.listen(port, () => {
+  console.log("Server listening at port", port);
 });
-
 
 // const db_accessor = require('./models/db_accessor.js');
 
