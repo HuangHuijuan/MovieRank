@@ -32,7 +32,7 @@ function _credence_recommand(param, callback)
               'corr(userid, correlation) as \n' + 
                   '(select userid, sum(SingleCorr)/count(SingleCorr) as correlation \n' + 
                       'from tmpCorr group by userid having' + 
-                          '(count(SingleCorr) > (select mCount from movieCount) / 5 and count(SingleCorr) > 1)),\n' +
+                          '(count(SingleCorr) > 1)),\n' +
               'movieIdList(movieid, score) as \n' + 
                   '(select movieid, (sum(rating * correlation) / sum(correlation)) as score \n' + 
                       'from ratings, corr where ratings.userid = corr.userid \n' + 
