@@ -15,7 +15,7 @@ module.exports = {
       if (error) {
         console.log("Insert Error: " + error.message);
         callback();
-        client.end();
+        // client.end();
         return;
       }
       if (callback && results.rowCount !== 0) {
@@ -32,7 +32,7 @@ module.exports = {
     client.query(selectQuery, function (error, results, fields) {
       if (error) {
         console.log("ClientReady Error: " + error.message);
-        client.end();
+        // client.end();
       }
       console.log('Get ' + results.rowCount + ' results.');
       callback(error ? [] : results.rows);
@@ -44,7 +44,7 @@ module.exports = {
     client.query(updateQuery, function (error, results) {
       if (error) {
         console.log("Update Error: " + error.message);
-        client.end();
+        // client.end();
         return;
       }
       console.log('update success...\n');
@@ -56,7 +56,7 @@ module.exports = {
     client.query(deleteQuery, function (error, results) {
       if (error) {
         console.log("Delete Error: " + error.message);
-        client.end();
+        // client.end();
         return;
       }
       console.log('delete success...\n');

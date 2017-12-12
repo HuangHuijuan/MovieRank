@@ -58,7 +58,7 @@ function rankMovieWithUID(userid, callback)
 function insertRating(uid, movie, score, callback)
 {
 	const query = {
-		text: 'INSERT INTO Rating(userid, movieid, rating, timestamp)',
+		text: 'INSERT INTO Ratings(userid, movieid, rating, timestamp) values ($1, $2, $3, $4) returning userid',
 		values: [uid, movie, score, Date.now()]
 	}
 	console.log('insertRating', query.values);
@@ -72,3 +72,4 @@ module.exports = {
 	rankMovieWithUID,
 	insertRating
 }
+
