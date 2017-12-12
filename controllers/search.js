@@ -14,7 +14,7 @@ function searchByTitle(title, userid, page, callback)
 		}
 		callback({ 
 			numOfPages: numOfPages,
-			movies: res.slice(start, end);
+			movies: res.slice(start, end)
 		});
 	});
 }
