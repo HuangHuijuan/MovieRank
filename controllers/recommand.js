@@ -32,11 +32,11 @@ function _credence_recommand(param, callback)
               'corr(userid, correlation) as \n' + 
                   '(select userid, sum(SingleCorr)/count(SingleCorr) as correlation \n' + 
                       'from tmpCorr group by userid having' + 
-                          '(count(SingleCorr) > (select mCount from movieCount) / 4 and count(SingleCorr) > 2)),\n' + 
+                          '(count(SingleCorr) > (select mCount from movieCount) / 5 and count(SingleCorr) > 1)),\n' +
               'movieIdList(movieid, score) as \n' + 
                   '(select movieid, (sum(rating * correlation) / sum(correlation)) as score \n' + 
                       'from ratings, corr where ratings.userid = corr.userid \n' + 
-                          'group by movieid having count(correlation) > 3 and' + 
+                          'group by movieid having count(correlation) > 2 and' +
                               ' movieid not in (select movieid from myVote))\n' +
               'select title from movies, movieIdList \n' + 
                   'where movies.movieid = movieIdList.movieid order by score desc limit 10;'
