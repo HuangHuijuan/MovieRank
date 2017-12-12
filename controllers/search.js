@@ -17,8 +17,7 @@ module.exports = {
       });
     });
   }
-}
-
+};
 // function searchByTag()
 // {
 // 	//const tag = request.body.tag;

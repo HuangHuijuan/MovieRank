@@ -9,6 +9,8 @@ const searchController = require('./controllers/search.js');
 const rankController = require('./models/rank.js');
 const recommand = require('./controllers/recommand.js');
 const userModel = require('./models/user.js');
+const movieModel = require('./models/movie.js');
+// const ratingController = require('./controllers/rating.js');
 
 //Here we are configuring express to use body-parser as middle-ware.
 app.use(logger('dev'));
@@ -48,7 +50,7 @@ app.listen(port, () => {
 // registerController.register();
 
 
-// const db_accessor = require('./models/db_accessor.js');
+const db_accessor = require('./models/db_accessor.js');
 
 // // const delete_query = {
 // // 	text: 'delete from users where username = $1',
@@ -56,21 +58,22 @@ app.listen(port, () => {
 // // }
 // // db_accessor._delete(delete_query);
 
-// const select_query = {
+rankController.rank(13, 1, res => {
+  // console.log(res);
+})
 
-// 	text: 'select * from users limit 10'
-// }
-// db_accessor._select(select_query, res => {
-// 	console.log(res);
-//   text: 'select * from users'
-// }
-// db_accessor._select(select_query, res => {
-//   console.log(res);
-// })
 
 // const userid = 2;
 
 // recommand._credence_recommand(userid, (result) => console.log(result));
 
 // loginController.login();
+// ratingController.rating( 13, 102125, 4);
 
+// const select_query = {
+//  text: 'select * from ratings where userid = 13'
+// }
+
+// db_accessor._select(select_query, res => {
+//   console.log(res);
+// })

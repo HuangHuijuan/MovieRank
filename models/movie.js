@@ -1,7 +1,5 @@
 const db_accessor = require('./db_accessor.js');
 
-let movies = [];
-
 function searchMovieByTitle(title, callback)
 {
 	const query = {
@@ -22,8 +20,8 @@ function searchMovieByTitleWithUID(title, userid, callback)
 	const query = {
 		text: `WITH m AS (SELECT * FROM Movies WHERE LOWER(title) LIKE LOWER(\'%${title}%\')),
 				u AS (SELECT r.movieid, rating FROM Ratings r, m WHERE r.userid = ${userid} and r.movieid = m.movieid),
-				r AS (SELECT r.movieid, AVG(rating) avg_rating FROM Ratings r NATURAL JOIN m GROUP BY r.movieid ORDER BY avg_rating desc)
-				SELECT m.movieid, title, genre, avg_rating, rating as u_rating 
+				r AS (SELECT movieid, score FROM moviescore ORDER BY score DESC)
+				SELECT m.movieid, title, genre, score, rating as u_rating 
 				FROM r NATURAL JOIN (m NATURAL LEFT JOIN u)`
 				
 	};
@@ -33,10 +31,11 @@ function searchMovieByTitleWithUID(title, userid, callback)
 function rankMovie(callback)
 {
 	const query = {
-		text: `SELECT m.movieid, title, genre, avg_rating 
-				FROM Movies m, (SELECT movieid, AVG(rating) avg_rating FROM Ratings GROUP BY movieid) t 
-				WHERE m.movieid = t.movieid 
-				ORDER BY avg_rating desc`
+		text: `SELECT m.movieid, title, genre, score 
+				FROM Movies m, MovieScore s
+				WHERE m.movieid = s.movieid 
+				ORDER BY score DESC
+				limit 10`
 	}
 
 	db_accessor._select(query, callback);
@@ -46,9 +45,9 @@ function rankMovieWithUID(userid, callback)
 {
 	const query = {
 		text: `With r AS 
-				(SELECT movieid, AVG(rating) avg_rating FROM Ratings GROUP BY movieid ORDER BY avg_rating desc),
+				(SELECT movieid, score FROM moviescore),
 				u AS (SELECT movieid, rating FROM Ratings r WHERE r.userid = ${userid}) 
-				SELECT r.movieid, title, genre, avg_rating, u.rating as u_rating 
+				SELECT r.movieid, title, genre, score, u.rating as u_rating 
 				FROM (r NATURAL LEFT JOIN u) NATURAL JOIN Movies`
 	}
 
@@ -65,11 +64,17 @@ function insertRating(uid, movie, score, callback)
 	db_accessor._insert(query, callback);
 }
 
+function userRating(uid, mid, callback) {
+	const query = {
+		text: `SELECT movieid, rating FROM Ratings WHERE userid=${uid} and movieid=${mid}`
+	}
+}
+
 module.exports = {
 	searchMovieByTitle,
 	searchMovieByTitleWithUID,
 	rankMovie,
 	rankMovieWithUID,
-	insertRating
+	insertRating,
+	userRating
 }
-

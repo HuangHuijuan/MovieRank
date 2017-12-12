@@ -119,33 +119,34 @@ function movies(req, res) {
   console.log('movies', search, page);
   if (!search) {
     rank.rank(req.userid, page, (ret) => {
-      const movies = ret.movies.map(movie => {
-        movie.avg_rating = movie.avg_rating.toFixed(1);
+      // console.log(ret.movies);
+      // const movies = ret.movies.map(movie => {
+      //   movie.avg_rating = movie.avg_rating.toFixed(1);
         // movie.u_rating = 3;
-        return movie;
-      });
-      console.log(ret)
+        // return movie;
+      // });
+      console.log(ret.movies)
       const data = {
         route: '/',
         name: req.session.name,
         userid: req.userid,
         numOfPages: ret.numOfPages,
-        movies: movies,
+        movies: ret.movies,
       };
       res.render('movies', data);
     });
   } else {
     searchController.searchByTitle(search, req.userid, page, (ret) => {
-      const movies = ret.movies.map(movie => {
-        movie.avg_rating = movie.avg_rating.toFixed(1);
-        return movie;
-      });
+      // const movies = ret.movies.map(movie => {
+      //   movie.avg_rating = movie.avg_rating.toFixed(1);
+      //   return movie;
+      // });
       const data = {
         route: '/',
         name: req.session.name,
         userid: req.userid,
         numOfPages: ret.numOfPages,
-        movies: movies,
+        movies: ret.movies,
       };
       res.render('movies', data);
     });
