@@ -15,14 +15,18 @@
     <span id="title"><a id="title-link" href="/">MovieRank</a></span>
     <!--<span><img id="icon" src="/icon.png"></span>-->
     <div class="links pull-right">
-      {% if route == "/signup" %} <a href="/login">Log In</a> {% endif %}
-      {% if route == "/login" %} <a href="/signup">Sign Up</a> {% endif %}
-      {% if route == "/" %} {{name}} <a class="red" href="/logout">Log Out</a> {% endif %}
+      {% if route == "/signup" %} <a href="/login">Log In</a>
+      {% elif route == "/login" %} <a href="/signup">Sign Up</a>
+      {% else %} {{name}} <a class="red" href="/logout">Log Out</a> {% endif %}
     </div>
   </div>
 </header>
 <div class="content">
   <div class="container">
+    <div class="label">
+      <a class="btn" href="/movies">Movie List</a>
+      <a class="btn" href="/recommendations">Recommendations</a>
+    </div>
     {% block body %}
     {% endblock %}
   </div>

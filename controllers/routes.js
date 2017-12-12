@@ -3,11 +3,15 @@ const auth = require('../models/auth.js');
 const movie = require('../models/movie.js');
 const rank = require('../models/rank.js');
 const searchController = require('./search.js');
+const recommandAPI = require('./recommand.js');
 
-router.get('/', requireLogin, movieRank);
+router.get('/', requireLogin, index);
+router.get('/movies', requireLogin, movieRank);
+router.get('/recommendations', requireLogin, recommand);
 router.get('/login', loginPage);
 router.get('/signup', signupPage);
 router.get('/logout', logout);
+
 router.post('/login', login);
 router.post('/register', register);
 router.post('/movies/:movieId/:rating', addRatingToMovie);
@@ -21,8 +25,16 @@ function requireLogin(req, res, next) {
   }
 }
 
+function index(req, res) {
+  const data = {
+    route: '/',
+    title: 'Index - Movie Rank'
+  };
+  res.render('layout', data);
+}
+
 function login(req, res) {
-  const {email, password} = req.body;
+  const { email, password } = req.body;
   auth.login(email, password, (errors, user) => {
     if (errors) {
       console.log(errors)
@@ -41,7 +53,7 @@ function login(req, res) {
 }
 
 function register(req, res) {
-  const {email, password, name} = req.body;
+  const { email, password, name } = req.body;
   auth.register(email, password, name, (errors, userid) => {
     if (errors) {
       const data = {
@@ -70,7 +82,7 @@ function index(req, res) {
     name: req.session.name,
     title: 'Index - Movie Rank'
   };
-  res.render('movie_rank', data);
+  res.render('movies', data);
 }
 
 function loginPage(req, res) {
@@ -89,12 +101,39 @@ function signupPage(req, res) {
   res.render('signup', data);
 }
 
+function recommand(req, res) {
+  recommandAPI._credence_recommand(req.userid, (ret) => {
+    const data = {
+      route: '/recommand',
+      name: req.session.name,
+      numOfPages: 1,
+      movies: ret,
+    };
+    res.render('recommandation', data);
+  });
+}
+
 function movieRank(req, res) {
-  let {page, search} = req.query;
+  let { page, search } = req.query;
   page = page || 1;
   console.log('movieRank', search, page);
-  if(!search) {
+  if (!search) {
     rank.rank(req.userid, page, (ret) => {
+      const movies = ret.movies.map(movie => {
+        movie.avg_rating = movie.avg_rating.toFixed(1);
+        return movie;
+      });
+      console.log(ret)
+      const data = {
+        route: '/',
+        name: req.session.name,
+        numOfPages: ret.numOfPages,
+        movies: movies,
+      };
+      res.render('movies', data);
+    });
+  } else {
+    searchController.searchByTitle(search, req.userid, page, (ret) => {
       const movies = ret.movies.map(movie => {
         movie.avg_rating = movie.avg_rating.toFixed(1);
         return movie;
@@ -105,29 +144,16 @@ function movieRank(req, res) {
         numOfPages: ret.numOfPages,
         movies: movies,
       };
-      res.render('movie_rank', data);
+      res.render('movies', data);
     });
   }
-  searchController.searchByTitle(search, req.userid, page, (ret) => {
-    const movies = ret.movies.map(movie => {
-      movie.avg_rating = movie.avg_rating.toFixed(1);
-      return movie;
-    });
-    const data = {
-      route: '/',
-      name: req.session.name,
-      numOfPages: ret.numOfPages,
-      movies: movies,
-    };
-    res.render('movie_rank', data);
-  });
 }
 
 function addRatingToMovie(req, res) {
-  const {movieId, rating} = req.params;
+  const { movieId, rating } = req.params;
   console.log('addRatingToMovie', movieId, rating, req.userid);
   movie.insertRating(req.userid, movieId, rating, () => {
-    res.json({succ: 'success'});
+    res.json({ succ: 'success' });
   });
 }
 

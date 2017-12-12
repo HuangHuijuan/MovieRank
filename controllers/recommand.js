@@ -39,7 +39,7 @@ function _credence_recommand(param, callback)
                           'group by movieid having count(correlation) > 3 and' + 
                               ' movieid not in (select movieid from myVote))\n' +
               'select title from movies, movieIdList \n' + 
-                  'where movies.movieid = movieIdList.movieid order by score desc limit 5;'
+                  'where movies.movieid = movieIdList.movieid order by score desc limit 10;'
     }
     client.query(credenceQuery, [param], function selectCb(error, results, fields)  
     {  

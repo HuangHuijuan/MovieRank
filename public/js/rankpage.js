@@ -4,7 +4,7 @@
     document.getElementById('search-input').value = search;
   }
 
-  document.getElementById('refresh').addEventListener('click', onRefreshClick, false);
+  // document.getElementById('refresh').addEventListener('click', onRefreshClick, false);
 
   var star = document.getElementsByClassName("star");
   for (var i = 0; i < star.length; i++) {

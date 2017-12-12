@@ -4,10 +4,6 @@
 <form class="search-form row">
   <input id="search-input" name="search" placeholder="Search movies by title">
 </form>
-<div class="label">
-  <span>Your movie recommendations</span>
-  <button id="refresh">Refresh</button>
-</div>
 <ul class="movie-list">
   {% for movie in movies %}
   <li class="movie-item">
@@ -32,18 +28,20 @@
   {% endfor %}
 </ul>
 <ul class="pagination">
-  {% if numOfPages < 3 %}
-    {% for i in range(1, numOfPages + 1) %}
-    <li class="page-item" page={{i}}>{{i}}</li>
-    {% endfor %}
-  {% else %}
-    {% for i in range(1, 4) %}
-    <li class="page-item" page={{i}}>{{i}}</li>
-    {% endfor %}
-    <li class="page-item" class="break-me">...</li>
-    {% for i in range(numOfPages - 1, numOfPages + 1) %}
-    <li class="page-item" page={{i}}>{{i}}</li>
-    {% endfor %}
+  {% if numOfPages %}
+    {% if numOfPages < 3 %}
+      {% for i in range(1, numOfPages + 1) %}
+      <li class="page-item" page={{i}}>{{i}}</li>
+      {% endfor %}
+    {% else %}
+      {% for i in range(1, 4) %}
+      <li class="page-item" page={{i}}>{{i}}</li>
+      {% endfor %}
+      <li class="page-item" class="break-me">...</li>
+      {% for i in range(numOfPages - 1, numOfPages + 1) %}
+      <li class="page-item" page={{i}}>{{i}}</li>
+      {% endfor %}
+    {% endif %}
   {% endif %}
 </ul>
 
