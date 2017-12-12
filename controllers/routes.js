@@ -6,7 +6,7 @@ const searchController = require('./search.js');
 const recommandAPI = require('./recommand.js');
 
 router.get('/', requireLogin, index);
-router.get('/movies', requireLogin, movieRank);
+router.get('/movies', requireLogin, movies);
 router.get('/recommendations', requireLogin, recommand);
 router.get('/login', loginPage);
 router.get('/signup', signupPage);
@@ -113,20 +113,22 @@ function recommand(req, res) {
   });
 }
 
-function movieRank(req, res) {
+function movies(req, res) {
   let { page, search } = req.query;
   page = page || 1;
-  console.log('movieRank', search, page);
+  console.log('movies', search, page);
   if (!search) {
     rank.rank(req.userid, page, (ret) => {
       const movies = ret.movies.map(movie => {
         movie.avg_rating = movie.avg_rating.toFixed(1);
+        // movie.u_rating = 3;
         return movie;
       });
       console.log(ret)
       const data = {
         route: '/',
         name: req.session.name,
+        userid: req.userid,
         numOfPages: ret.numOfPages,
         movies: movies,
       };
@@ -141,6 +143,7 @@ function movieRank(req, res) {
       const data = {
         route: '/',
         name: req.session.name,
+        userid: req.userid,
         numOfPages: ret.numOfPages,
         movies: movies,
       };
@@ -150,10 +153,18 @@ function movieRank(req, res) {
 }
 
 function addRatingToMovie(req, res) {
-  const { movieId, rating } = req.params;
-  console.log('addRatingToMovie', movieId, rating, req.userid);
-  movie.insertRating(req.userid, movieId, rating, () => {
-    res.json({ succ: 'success' });
+  let { movieId, rating } = req.params;
+  let { userid } = req.body;
+  movieId = parseInt(movieId);
+  userid = parseInt(userid);
+  rating = parseInt(rating);
+  // console.log('addRatingToMovie', movieId, rating, userid);
+  movie.insertRating(userid, movieId, rating, (ret) => {
+    console.log('addRatingToMovie', movieId, rating, userid);
+    if(ret)
+      res.json({ succ: 'success' });
+    else
+      res.sendStatus(400);
   });
 }
 

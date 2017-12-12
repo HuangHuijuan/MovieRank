@@ -24,12 +24,16 @@ function onRefreshClick() {
 function onStarClick(e) {
   var movieId = e.target.parentNode.getAttribute('movieId');
   var rating = e.target.getAttribute('rating');
-
-  fetch(`/movies/${movieId}/${rating}`, option('post', {}))
+  var userid = document.getElementById('user-id').getAttribute('value');
+  console.log(userid);
+  fetch(`/movies/${movieId}/${rating}`, option('post', {userid})).then(handleRes)
     .then((res) => {
       console.log(res);
-    });
-  updateStars(movieId, rating);
+    })
+    .catch((err) => {
+      console.log('error onStarClick');
+    })
+    updateStars(movieId, rating);
 }
 
 function onPageItemClick(e) {
@@ -77,4 +81,13 @@ function getParameterByName(name, url) {
   if (!results) return null;
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+function handleRes(res) {
+  let json = res.json();
+  return res.status < 400 ?
+    json :
+    json.then(json => {
+      throw json;
+    });
 }

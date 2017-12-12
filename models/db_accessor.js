@@ -14,6 +14,7 @@ module.exports = {
     client.query(insertQuery, function (error, results) {
       if (error) {
         console.log("Insert Error: " + error.message);
+        callback();
         client.end();
         return;
       }
